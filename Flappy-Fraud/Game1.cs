@@ -36,7 +36,7 @@ namespace Flappy_Fraud
             //Get the center of the screen
             _center = new Vector2((GraphicsDevice.Viewport.Width / 2), GraphicsDevice.Viewport.Height / 2);
             _position = new Vector2(_center.X - 50, _center.Y);
-            _moveSpeed = 5f;
+            _moveSpeed = 10f;
             Player = new Bird(_position);
             //Initialize Player Animation Frame
             Player.currentFrame = 0;
@@ -77,19 +77,18 @@ namespace Flappy_Fraud
             }
 
             KeyboardState state = Keyboard.GetState();
+            MouseState mState = Mouse.GetState();
             //Player Position Update
-            if (state.IsKeyDown(Keys.Left))
-                _position.X -= _moveSpeed;
 
-            if (state.IsKeyDown(Keys.Right))
-                _position.X += _moveSpeed;
-
-            if (state.IsKeyDown(Keys.Up))
+            if (state.IsKeyDown(Keys.Up) || mState.LeftButton == ButtonState.Pressed)
+            {
                 _position.Y -= _moveSpeed;
+            }
 
-            if (state.IsKeyDown(Keys.Down))
-                _position.Y += _moveSpeed;
-
+            if (_position.Y + Player.texture.Height <= GraphicsDevice.Viewport.Height)
+            {
+                _position.Y += 5;
+            }
 
             base.Update(gameTime);
         }
