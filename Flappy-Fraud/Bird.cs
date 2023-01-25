@@ -15,6 +15,8 @@ namespace Flappy_Fraud
         public Vector2 position { get; set; }
         public int animationFrame { get; set; }
         public int currentFrame { get; set; }
+        public int speed { get; set; }
+        public int X, Y;
 
         public Rectangle[] spriteAnimation =
         {
