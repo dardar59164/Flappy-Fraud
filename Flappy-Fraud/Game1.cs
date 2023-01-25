@@ -9,9 +9,11 @@ namespace Flappy_Fraud
     {
         private GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
-        public Bird Player = new Bird();
+        public Bird Player;
         Texture2D backgroundTexture;
         private Vector2 _center;
+        private Vector2 _position;
+        private float _moveSpeed;
         private float animationSpeed = 1 / 5f;
         private float currentTime = 0;
 
@@ -33,7 +35,9 @@ namespace Flappy_Fraud
 
             //Get the center of the screen
             _center = new Vector2((GraphicsDevice.Viewport.Width / 2), GraphicsDevice.Viewport.Height / 2);
-
+            _position = new Vector2(_center.X - 50, _center.Y);
+            _moveSpeed = 5f;
+            Player = new Bird(_position);
             //Initialize Player Animation Frame
             Player.currentFrame = 0;
 
@@ -50,12 +54,12 @@ namespace Flappy_Fraud
 
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState state = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             Player.animationFrame = Player.currentFrame;
+            Player.position = _position;
 
             //Player Animation Update
             if (currentTime >= animationSpeed)
@@ -72,17 +76,19 @@ namespace Flappy_Fraud
                 }
             }
 
+            KeyboardState state = Keyboard.GetState();
             //Player Position Update
             if (state.IsKeyDown(Keys.Left))
-                Player.position = new Vector2(Player.position.X - Player.speed, Player.position.Y);
+                _position.X -= _moveSpeed;
+
             if (state.IsKeyDown(Keys.Right))
-                Player.position = new Vector2(Player.position.X + Player.speed, Player.position.Y);
+                _position.X += _moveSpeed;
 
             if (state.IsKeyDown(Keys.Up))
-                Player.position = new Vector2(Player.position.X, Player.position.Y - Player.speed);
+                _position.Y -= _moveSpeed;
 
             if (state.IsKeyDown(Keys.Down))
-                Player.position = new Vector2(Player.position.X, Player.position.Y + Player.speed);
+                _position.Y += _moveSpeed;
 
 
             base.Update(gameTime);
@@ -94,7 +100,7 @@ namespace Flappy_Fraud
 
             _spriteBatch.Begin();
             _spriteBatch.Draw(backgroundTexture,new Vector2(0,0),Color.White);
-            _spriteBatch.Draw(Player.texture, Player.position,Player.spriteAnimation[Player.animationFrame],Color.White);
+            _spriteBatch.Draw(Player.texture, _position,Player.spriteAnimation[Player.animationFrame],Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -12,11 +12,10 @@ namespace Flappy_Fraud
     public class Bird : Game
     {
         public Texture2D texture { get; set; }
-        public Vector2 position { get; set; }
         public int animationFrame { get; set; }
         public int currentFrame { get; set; }
-        public int speed { get; set; }
-        public int X, Y;
+        public Vector2 position;
+        public float speed = 5f;
 
         public Rectangle[] spriteAnimation =
         {
@@ -24,5 +23,10 @@ namespace Flappy_Fraud
             new Rectangle(34,0,34,24),
             new Rectangle(68,0,34,24),
         };
+
+        public Bird(Vector2 argPosition)
+        {
+            position = argPosition;
+        }
     }
 }
